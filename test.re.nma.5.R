@@ -63,8 +63,8 @@ for(outcome.i in c(1,4)) {
     treatment.matrix.temp[study.i, 1:bugs.data[[outcome.i]]$na[study.i]] <- treatment.names[[outcome.i]][bugs.data[[outcome.i]]$t[study.i, 1:bugs.data[[outcome.i]]$na[study.i]]]
     events.matrix.temp[study.i, 1:bugs.data[[outcome.i]]$na[study.i]] <- paste0(bugs.data[[outcome.i]]$r[study.i, ], "/", bugs.data[[outcome.i]]$n[study.i, ])[1:bugs.data[[outcome.i]]$na[study.i]]
   }
-  write.csv(events.matrix.temp, file = paste0(baseline.directory, "/results/data summaries/events.", outcome.names[outcome.i], ".csv"))
-  write.csv(treatment.matrix.temp, file = paste0(baseline.directory, "/results/data summaries/treatments.", outcome.names[outcome.i], ".csv"))
+  write.csv(events.matrix.temp, file = paste0("results/data summaries/events.", outcome.names[outcome.i], ".csv"))
+  write.csv(treatment.matrix.temp, file = paste0("results/data summaries/treatments.", outcome.names[outcome.i], ".csv"))
 }
 
 
@@ -100,14 +100,14 @@ for(outcome.i in 1:length(outcome.names))
 	
 	# Look at correlation between covariate and event probability	
 	# Age and CHADS2 look correlated, but gender seems independent.
-	jpeg(file=paste(baseline.directory,"/results/correlation plots/",outcome.names[outcome.i],".vs.",dimnames(bugs.data[[outcome.i]]$x)[[1]][1],".jpg",sep=""))
+	jpeg(file=paste("results/correlation plots/",outcome.names[outcome.i],".vs.",dimnames(bugs.data[[outcome.i]]$x)[[1]][1],".jpg",sep=""))
 	#plot(x=bugs.data[[outcome.i]]$x[1,,],y=bugs.data[[outcome.i]]$r/bugs.data[[outcome.i]]$n,ylab=names(bugs.data)[outcome.i],xlab=dimnames(bugs.data[[outcome.i]]$x)[[1]][1])
 	plot(x=x.base[1,],y=r.base/n.base,ylab=names(bugs.data)[outcome.i],xlab=dimnames(bugs.data[[outcome.i]]$x)[[1]][1],main="Correlation reference arms")
 	dev.off()
-	jpeg(file=paste(baseline.directory,"/results/correlation plots - all data/",outcome.names[outcome.i],".vs.",dimnames(bugs.data[[outcome.i]]$x)[[1]][2],".jpg",sep=""))
+	jpeg(file=paste("results/correlation plots - all data/",outcome.names[outcome.i],".vs.",dimnames(bugs.data[[outcome.i]]$x)[[1]][2],".jpg",sep=""))
 	plot(x=x.base[2,],y=r.base/n.base,ylab=names(bugs.data)[outcome.i],xlab=dimnames(bugs.data[[outcome.i]]$x)[[1]][2],main="Correlation reference arms")
 	dev.off()
-	jpeg(file=paste(baseline.directory,"/results/correlation plots/",outcome.names[outcome.i],".vs.",dimnames(bugs.data[[outcome.i]]$x)[[1]][3],".jpg",sep=""))
+	jpeg(file=paste("results/correlation plots/",outcome.names[outcome.i],".vs.",dimnames(bugs.data[[outcome.i]]$x)[[1]][3],".jpg",sep=""))
 	plot(x=x.base[3,],y=r.base/n.base,ylab=names(bugs.data)[outcome.i],xlab=dimnames(bugs.data[[outcome.i]]$x)[[1]][3],main="Correlation reference arms")
 	dev.off()
 
@@ -121,7 +121,7 @@ for(outcome.i in 1:length(outcome.names))
 	t2<-c(tr[!is.na(tr)])
 
 	# These network plots don't make sense in terms of treatment ordering
-	jpeg(file=paste(baseline.directory,"/results/network plots/",outcome.names[outcome.i],".jpg",sep=""),width=960,height=480)
+	jpeg(file=paste("results/network plots/",outcome.names[outcome.i],".jpg",sep=""),width=960,height=480)
 	mtm.networkplot.fun(t1=t1,t2=t2,percomparison=FALSE,nameoftreatments=paste(1:bugs.data[[outcome.i]]$nt,treatment.names[[outcome.i]]))
 	title(outcome.names[outcome.i])
 	dev.off()
@@ -235,7 +235,7 @@ for(outcome.i in 1:n.outcomes)
 	t2<-c(bugs.data.disconnect[[outcome.i]]$t[!is.na(bugs.data.disconnect[[outcome.i]]$t)])
 
 	# Plot the connected network with dabigatran nodes removed
-	jpeg(file=paste(baseline.directory,"/results/network plots/subnetwork.connected.",outcome.names[outcome.i],".jpg",sep=""),width=960,height=480)
+	jpeg(file=paste("results/network plots/subnetwork.connected.",outcome.names[outcome.i],".jpg",sep=""),width=960,height=480)
 	mtm.networkplot.fun(t1=t1,t2=t2,percomparison=FALSE,nameoftreatments=treatment.names[[outcome.i]][unique(t2)])
 	#title(paste("Disconnected",outcome.names[outcome.i]))	
 	dev.off()
@@ -251,14 +251,14 @@ for(outcome.i in 1:n.outcomes)
 	t2<-c(t2,bugs.data.disconnect[[outcome.i]]$t.disc[!is.na(bugs.data.disconnect[[outcome.i]]$t.disc)])
 
 	# Plot the network of dabigatran nodes
-	jpeg(file=paste(baseline.directory,"/results/network plots/subnetwork.disconnected.",outcome.names[outcome.i],".jpg",sep=""),width=960,height=480)
+	jpeg(file=paste("results/network plots/subnetwork.disconnected.",outcome.names[outcome.i],".jpg",sep=""),width=960,height=480)
 	mtm.networkplot.fun(t1=t1.disc,t2=t2.disc,percomparison=FALSE,nameoftreatments=treatment.names[[outcome.i]][unique(t2.disc)])
 	#title(paste("Disconnected",outcome.names[outcome.i]))	
 	dev.off()
 
 
 	# Plot the disconnected network with all (connected and disconneced) treatments
-	jpeg(file=paste(baseline.directory,"/results/network plots/disconnected",outcome.names[outcome.i],".jpg",sep=""),width=960,height=480)
+	jpeg(file=paste("results/network plots/disconnected",outcome.names[outcome.i],".jpg",sep=""),width=960,height=480)
 	mtm.networkplot.fun(t1=t1,t2=t2,percomparison=FALSE,nameoftreatments=paste(1:bugs.data[[outcome.i]]$nt,treatment.names[[outcome.i]]))
 	title(paste("Disconnected",outcome.names[outcome.i]))	
 	dev.off()
@@ -514,7 +514,7 @@ for(outcome.i in 1:n.outcomes)
 	print("Single arms plug-in estimator")
 	bugs.object.plugin.single.fe[[outcome.i]]<-bugs(data=bugs.data.single.plugin[[outcome.i]],inits=bugs.inits.single[[outcome.i]],parameters.to.save=c("mu","d","totresdev"),model=model.plugin.single.fe,clearWD=TRUE,summary.only=FALSE,n.iter=(num.sims+burn.in),n.burnin=burn.in,n.chains=n.chains,bugs.seed=1,n.thin=10,debug=FALSE)
 	# This worked for outcome.i 1 and 4 (although sd uniform prior had to be bounded above by 2)
-	bugs.object.plugin.single.re[[outcome.i]]<-bugs(data=bugs.data.single.plugin[[outcome.i]],inits=bugs.inits.single.re[[outcome.i]],parameters.to.save=c("mu","d","sd","sd.disc","totresdev"),model.file=paste0(baseline.directory,"/code/plugin.model.single.re.3.txt"),	
+	bugs.object.plugin.single.re[[outcome.i]]<-bugs(data=bugs.data.single.plugin[[outcome.i]],inits=bugs.inits.single.re[[outcome.i]],parameters.to.save=c("mu","d","sd","sd.disc","totresdev"),model.file=paste0("plugin.model.single.re.3.txt"),	
 		clearWD=TRUE,summary.only=FALSE,n.iter=(num.sims+burn.in),n.burnin=burn.in,n.chains=n.chains,bugs.seed=1,n.thin=10,debug=FALSE)
 
 
@@ -522,7 +522,7 @@ for(outcome.i in 1:n.outcomes)
 	print("Plug-in estimator for disconnected RCTs")
 	bugs.object.plugin.disc.fe[[outcome.i]]<-bugs(data=bugs.data.disconnect.plugin[[outcome.i]],inits=bugs.inits.disc[[outcome.i]],parameters.to.save=c("mu","d","totresdev.disc","totresdev"),model=model.plugin.disc.fe,clearWD=TRUE,summary.only=FALSE,n.iter=(num.sims+burn.in),n.burnin=burn.in,n.chains=n.chains,bugs.seed=1,n.thin=10,debug=FALSE)
 	# Note that bugs.seed was 10 for stroke but changed to 5 for bleed as it crashed with 10. 
-	bugs.object.plugin.disc.re[[outcome.i]]<-bugs(data=bugs.data.disconnect.plugin[[outcome.i]],inits=bugs.inits.disc.re[[outcome.i]],parameters.to.save=c("mu","d","sd","sd.disc","totresdev.disc","totresdev"),model.file=paste0(baseline.directory,"/code/plugin.model.disconnected.re.3.txt"),	
+	bugs.object.plugin.disc.re[[outcome.i]]<-bugs(data=bugs.data.disconnect.plugin[[outcome.i]],inits=bugs.inits.disc.re[[outcome.i]],parameters.to.save=c("mu","d","sd","sd.disc","totresdev.disc","totresdev"),model.file=paste0("plugin.model.disconnected.re.3.txt"),	
 		clearWD=TRUE,summary.only=FALSE,n.iter=(num.sims+burn.in),n.burnin=burn.in,n.chains=n.chains,bugs.seed=5,n.thin=1,debug=FALSE)
 
 
@@ -530,7 +530,7 @@ for(outcome.i in 1:n.outcomes)
 	print("Single arms rebase")
 	bugs.object.rebase.single.fe[[outcome.i]]<-bugs(data=bugs.data.single[[outcome.i]],inits=bugs.inits.single[[outcome.i]],parameters.to.save=c("mu","d","m","sd.m","mu.single","totresdev"),model=model.random.effects.baseline.single.fe,clearWD=TRUE,summary.only=FALSE,n.iter=(num.sims+burn.in),n.burnin=burn.in,n.chains=n.chains,bugs.seed=1,n.thin=10,debug=FALSE)
 	# This worked for outcome.i 1 and 4 (although sd uniform prior had to be bounded above by 2)
-	bugs.object.rebase.single.re[[outcome.i]]<-bugs(data=bugs.data.single[[outcome.i]],inits=bugs.inits.single.re[[outcome.i]],parameters.to.save=c("mu","d","m","sd.m","mu.single","sd","sd.disc","totresdev"),model.file=paste0(baseline.directory,"/code/random.effects.baseline.model.single-arms.re.3.txt"),	
+	bugs.object.rebase.single.re[[outcome.i]]<-bugs(data=bugs.data.single[[outcome.i]],inits=bugs.inits.single.re[[outcome.i]],parameters.to.save=c("mu","d","m","sd.m","mu.single","sd","sd.disc","totresdev"),model.file=paste0("random.effects.baseline.model.single-arms.re.3.txt"),	
 		clearWD=TRUE,summary.only=FALSE,n.iter=(num.sims+burn.in),n.burnin=burn.in,n.chains=n.chains,bugs.seed=1,n.thin=10,debug=FALSE)
 
 
@@ -545,11 +545,11 @@ for(outcome.i in 1:n.outcomes)
 	bugs.object.rebase.disc.fe[[outcome.i]]<-bugs(data=bugs.data.disconnect[[outcome.i]],inits=bugs.inits.disc[[outcome.i]],parameters.to.save=c("mu","d","m","sd.m","mu.disc","totresdev.disc","totresdev"),model=model.random.effects.baseline.disc.fe,clearWD=TRUE,summary.only=FALSE,n.iter=(num.sims+burn.in),n.burnin=burn.in,n.chains=n.chains,bugs.seed=1,n.thin=10,debug=FALSE)
 	# The below worked for both outcome.i 1
 	# Ran into update error for node <delta[4,2]>  for outcome.i 4
-	bugs.object.rebase.disc.re[[outcome.i]]<-bugs(data=bugs.data.disconnect[[outcome.i]],inits=bugs.inits.disc.re[[outcome.i]],parameters.to.save=c("mu","d","m","sd.m","mu.disc","sd","sd.disc","totresdev.disc","totresdev"),model.file=paste0(baseline.directory,"/code/random.effects.baseline.model.disconnected.re.4.txt"),	
+	bugs.object.rebase.disc.re[[outcome.i]]<-bugs(data=bugs.data.disconnect[[outcome.i]],inits=bugs.inits.disc.re[[outcome.i]],parameters.to.save=c("mu","d","m","sd.m","mu.disc","sd","sd.disc","totresdev.disc","totresdev"),model.file=paste0("random.effects.baseline.model.disconnected.re.4.txt"),	
 		clearWD=TRUE,summary.only=FALSE,n.iter=(num.sims+burn.in),n.burnin=burn.in,n.chains=n.chains,bugs.seed=1,n.thin=10,debug=FALSE)
 }
 
-save(file=paste(baseline.directory,"/results/bugs objects/bugs.objects.4.rda",sep=""),bugs.object.rebase.disc.chads2.re,bugs.object.matched,
+save(file=paste("results/bugs objects/bugs.objects.4.rda",sep=""),bugs.object.rebase.disc.chads2.re,bugs.object.matched,
 		bugs.object.disc.rct.only.fe, bugs.object.disc.rct.only.re, bugs.object.single.rct.only.fe, bugs.object.single.rct.only.re,
 		bugs.object.rebase.disc.re,bugs.object.rebase.disc.fe,
 		bugs.object.rebase.single.chads2.re,
@@ -558,7 +558,7 @@ save(file=paste(baseline.directory,"/results/bugs objects/bugs.objects.4.rda",se
 		bugs.object.plugin.disc.fe,bugs.object.plugin.disc.re,
 		bugs.object.plugin.single.fe,bugs.object.plugin.single.re,
 		bugs.data.disconnect.plugin, 	bugs.data.single.plugin)
-#load(file=paste(baseline.directory,"/results/bugs objects/bugs.objects.4.rda",sep=""))
+#load(file=paste("results/bugs objects/bugs.objects.4.rda",sep=""))
 
 # Need some comparison
 comparison.matrix<-matrix(nrow=bugs.data[[outcome.i]]$nt,ncol=5)
